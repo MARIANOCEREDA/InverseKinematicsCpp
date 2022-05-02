@@ -1,5 +1,5 @@
 
-#include "Joint.h"
+#include "../headers/Joint.h"
 
 Joint::Joint(int num, string type)
 {
