@@ -468,6 +468,9 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+# Carpeta
+.PythonRef/
+
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
