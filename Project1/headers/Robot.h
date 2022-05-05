@@ -1,15 +1,17 @@
 #pragma once
 
 #include "../headers/Joint.h"
+#include "../headers/Point.h"
+#include <string>
+using namespace std;
+
+#define M_PI 3.141592653589793238462643383279502884
 
 class Robot
 {
 private:
-	double **dh; //Denavit-Hartenverg matrix
-	double **tool; //Tool matrix (end effector)
-	double **base; //Base matrix (identity in the simplest case)
-	double **T; // Homogenous matrix containing the x,y,z point to achieve.
-	double *qoffest;
+	string name;
 public:
-	Robot(double**,double**,double**,double**);
+	Robot(string name);
+	Point calculatePosition(double** base,double** tool,double** T);
 };
