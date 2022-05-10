@@ -1,6 +1,23 @@
 
 #include "../headers/MatrixOperations.h"
 
+Matrix::Matrix(){
+    for (size_t i = 0; i < N; i++)
+    {
+        for (size_t j = 0; j < N; j++) {
+            m[i][j] = 0;
+        }
+    }
+}
+
+Matrix::Matrix(double matrix[4][4]) {
+    for (size_t i = 0; i < N; i++)
+    {
+        for (size_t j = 0; j < N; j++) {
+            m[i][j] = matrix[i][j];
+        }
+    }
+}
 
 /**
 * @name -> inverse
@@ -11,7 +28,7 @@
 * @parameters m[][] -> result (inverse matrix of m)
 */
 
-void inverse(double m[4][4],double minv[4][4],double &det) {
+void Matrix::inverse(double minv[4][4],double &det) {
     int8_t i, j, k,n;
     n = N;
     double factor;
@@ -28,7 +45,7 @@ void inverse(double m[4][4],double minv[4][4],double &det) {
         for (i = k + 1; i < n; i++) {
             factor = m[i][k] / m[k][k];
             for (j = k + 1; j < n + 1 ; j++) {
-                m[i][j] = m[i][j] - factor * m[k][j];
+                this->m[i][j] = this->m[i][j] - factor * m[k][j];
             }
         }
     }
@@ -48,8 +65,8 @@ void inverse(double m[4][4],double minv[4][4],double &det) {
         for (i = 0; i < n; i++) {
             for (j = 0; j < n; j++) {
                 if (i > j) {
-                    L[i][j] = m[i][j] / m[j][j];
-                    m[i][j] = 0;
+                    L[i][j] = this->m[i][j] / m[j][j];
+                    this->m[i][j] = 0;
                 }
             }
         }
@@ -87,22 +104,22 @@ void inverse(double m[4][4],double minv[4][4],double &det) {
             // Esta rutina asigna los D[i] que produce forward para ser utilizados con la matriz U
 
             for (i = 0; i < n; i++) {
-                m[i][n] = D[i];
+                this->m[i][n] = D[i];
 
             }
 
             // Rutina que aplica la sustitución hacia atras
 
-            X[n - 1] = m[n - 1][n] / m[n - 1][n - 1];
+            X[n - 1] = this->m[n - 1][n] / this->m[n - 1][n - 1];
 
             // Determinación de las raíces restantes
 
             for (i = n - 2; i > -1; i--) {
                 sum = 0;
                 for (j = i + 1; j < n; j++) {
-                    sum = sum + m[i][j] * X[j];
+                    sum = sum + this->m[i][j] * X[j];
                 }
-                X[i] = (m[i][n] - sum) / m[i][i];
+                X[i] = (this->m[i][n] - sum) / this->m[i][i];
             }
 
             // Esta rutina asigna los X[i] que produce Sustituir como los elementos de la matriz inversa
@@ -116,30 +133,6 @@ void inverse(double m[4][4],double minv[4][4],double &det) {
     delete L, D, X;
 }
 
-
-
-/**
-* @name -> product
-* @type -> function
-* @return void -> no return value
-* @description -> Calculates the product between 2 matrix. Te size of the matrix is fix (4x4).
-* @parameters m1[][] -> first matrix of the product
-* @parameters m2[][] -> second matrix of the product
-* @parameters result[][] -> result containing the product
-*/
-
-void product(double m1[4][4], double m2[4][4],double result[4][4]) {
-
-	result[0][0] = 0;
-	int k = 0;
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < cols; j++) {
-			result[i][j] = result[i][j] + m1[i][j] * m2[i][j];
-		}
-	}
-
-}
-
 /**
 * @name -> rot
 * @type -> function
@@ -151,7 +144,7 @@ void product(double m1[4][4], double m2[4][4],double result[4][4]) {
 * @parameteres axis -> rotation axis.
 */
 
-void rot(double m[4][4],double angle, double mrot[4][4],char axis)
+void Matrix::rot(double angle, double mrot[4][4],char axis)
 {
     float cosa, sina;
     identityMatrix(mrot);
@@ -181,11 +174,18 @@ void rot(double m[4][4],double angle, double mrot[4][4],char axis)
     default:
         break;
     }
-    /*We replace for the corresponding sines and cosines so the z rotation is produced*/
-    
 };
 
-void translate(double m[4][4],double* xyz,double mtransl[4][4])
+/**
+* @name -> translate
+* @type -> method
+* @return void -> no return value
+* @description -> Translate the identity from the {0,0,0} to xyz
+* @parameters xyz ->
+* @parameters result[][] -> result containing the product
+*/
+
+void Matrix::translate(double* xyz,double mtransl[4][4])
 {
     identityMatrix(mtransl);
     mtransl[0][3] = xyz[0];
@@ -193,7 +193,7 @@ void translate(double m[4][4],double* xyz,double mtransl[4][4])
     mtransl[2][3] = xyz[2];
 }
 
-void identityMatrix(double identity[4][4])
+void Matrix::identityMatrix(double identity[4][4])
 {
     /*We fill the identity matrix*/
     for (size_t i = 0; i < N; i++) {
@@ -207,12 +207,28 @@ void identityMatrix(double identity[4][4])
     }
 }
 
-void print(double m[4][4]) {
+void Matrix::print() {
     for (size_t i = 0; i < N; i++)
     {
         for (size_t j = 0; j < N; j++) {
-            std::cout << m[i][j] << " " ;
+            std::cout << this->m[i][j] << " " ;
         }
         std::cout << "\n";
     }
+}
+
+Matrix Matrix::operator*(const Matrix& m2)
+{
+    double result[N][N];
+    for (int a = 0; a < N; a++) {
+        for (int i = 0; i < N; i++) {
+            int sum = 0;
+            for (int j = 0; j < N; j++) {
+                sum += this->m[i][j] * m2.m[j][a];
+            }
+            result[i][a] = sum;
+        }
+    }
+
+    return Matrix(result);
 }
