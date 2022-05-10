@@ -5,11 +5,16 @@
 #include <vector>
 using namespace std;
 
+#define N 4
 #define rows 4
 #define cols 4
 
-void inverse(double m[4][4],static double result[4][4]);
+void inverse(double m[4][4],double minv[4][4],double &det);
 void product(double m1[4][4],double m2[4][4],double result[4][4]);
+void rot(double m[4][4],double angle, double mrot[4][4],char axis);
+void translate(double m[4][4],double* xyz,double mtransl[4][4]);
+void identityMatrix(double identity[4][4]);
+void print(double m[4][4]);
 
 
 
