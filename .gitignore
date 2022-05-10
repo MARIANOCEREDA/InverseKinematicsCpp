@@ -471,6 +471,7 @@ FodyWeavers.xsd
 # Carpeta
 .PythonRef/
 .INVERSA/
+.paho.mqtt/
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
