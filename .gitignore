@@ -473,6 +473,7 @@ FodyWeavers.xsd
 .INVERSA/
 ./Project1/paho.mqtt/
 ./Project1/INVERSA/
+.paho.mqtt/
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
