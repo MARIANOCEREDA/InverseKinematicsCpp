@@ -1,15 +1,33 @@
 #pragma once
+
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+
+#include "../paho.mqtt/paho.mqtt/src/MQTTClient.h"
+
+#define ADDRESS     "tcp://broker.emqx.io:1883"
+#define CLIENTID    "emqx_test"
+#define TOPIC       "testtopic/1"
+#define PAYLOAD     "Hello World!"
+#define QOS         1
+#define TIMEOUT     10000L
+
+/**
+* @name -> API
+* @type -> class
+* @description -> API class that connects the HMI in python with the robot in C++.
+*/
+
 class API
-	/**
-	*@description: API from server side. It receives the data from the cliente. The data includes the x,y,z coordinates
-	* for the end effector
-	*/
 {
 private:
 	int xfinal, yfinal, zfinal;
+	MQTTClient client;
 public:
 	API();
-	void connect();
-	void receiveData();
+	MQTTClient connect();
 	void disconnect();
+	void publish();
+	void subscribe();
 };
