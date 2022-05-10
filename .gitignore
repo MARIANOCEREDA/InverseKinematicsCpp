@@ -472,6 +472,7 @@ FodyWeavers.xsd
 .PythonRef/
 .INVERSA/
 ./Project1/paho.mqtt/
+./Project1/INVERSA/
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
